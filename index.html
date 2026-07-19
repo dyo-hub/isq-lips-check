@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>립스(LIPS) 자격 자가진단 · 임팩트스퀘어</title>
+<style>
+  :root{
+    --ink:#0d0d0d; --sub:#333; --faint:#707070; --line:#000;
+    --hair:#d3d3d3; --fill:#f1f1ef; --fill2:#e6e6e3; --paper:#fff;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent}
+  html,body{background:#e9e9e7; color:var(--ink); overflow-x:hidden;
+    font-family:'Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif; word-break:keep-all; line-height:1.62}
+  .wrap{max-width:560px; margin:0 auto; background:var(--paper); min-height:100vh; padding:36px 22px 64px}
+  .kick{font-size:12px; letter-spacing:.14em; color:var(--faint); font-weight:700; border-left:3px solid var(--line); padding-left:10px}
+  h1{font-size:28px; font-weight:800; letter-spacing:-.02em; margin-top:16px; line-height:1.26}
+  .lede{font-size:16px; color:var(--sub); margin-top:12px; font-weight:500}
+  .intro{font-size:14.5px; color:var(--sub); margin-top:20px; padding:16px 18px; background:var(--fill); border:1px solid var(--hair)}
+  .intro b{color:var(--ink)}
+
+  .quiz{margin-top:34px}
+  .q{border-top:1px solid var(--hair); padding:24px 0}
+  .q:first-child{border-top:2px solid var(--line)}
+  .q .qn{font-size:12px; color:var(--faint); font-weight:800; letter-spacing:.04em}
+  .q .qt{font-size:18px; font-weight:800; margin-top:6px; line-height:1.4}
+  .q .qd{font-size:13.5px; color:var(--sub); margin-top:9px}
+  .q .qd a{color:var(--ink); font-weight:700; text-decoration:underline; text-underline-offset:2px}
+  .q .qd .note{font-size:12.5px; color:var(--faint); display:block; margin-top:5px}
+  .proglist{width:100%; border-collapse:collapse; margin-top:13px; font-size:12.5px}
+  .proglist td{border-top:1px solid var(--hair); padding:9px 6px; vertical-align:top; color:var(--sub); line-height:1.5}
+  .proglist tr:first-child td{border-top:1.5px solid var(--line)}
+  .proglist td.dept{font-weight:800; color:var(--ink); width:88px}
+  .proglist td.pgs{line-height:1.9}
+  .proglist td.pgs .pg{white-space:nowrap; display:inline-block; vertical-align:top}
+  .proglist td.pgs .pg + .pg::before{content:"· "; color:var(--faint); font-weight:400}
+  .opts{display:flex; gap:10px; margin-top:16px}
+  .opt{flex:1; text-align:center; padding:14px 4px; font-size:15px; font-weight:800; color:var(--sub);
+    border:1.5px solid var(--hair); background:var(--paper); cursor:pointer; user-select:none; transition:.12s}
+  .opt.sel{background:var(--ink); color:#fff; border-color:var(--ink)}
+  .verdict{display:none; margin-top:13px; padding:11px 14px; font-size:13.5px; font-weight:600; line-height:1.5}
+  .verdict.show{display:block}
+  .verdict.pass{background:var(--fill); color:var(--ink); border-left:3px solid var(--ink)}
+  .verdict.block{background:var(--fill2); color:var(--ink); border-left:3px solid var(--ink)}
+  .verdict .vh{font-weight:800}
+
+  .result{margin-top:34px; border:2px solid var(--line); padding:22px 20px}
+  .result .rlabel{font-size:12px; font-weight:800; letter-spacing:.08em; color:var(--faint)}
+  .result .rh{font-size:20px; font-weight:800; margin-top:9px; line-height:1.35}
+  .result .rb{font-size:14.5px; color:var(--sub); margin-top:11px; font-weight:500}
+  .result .steps{margin-top:13px; font-size:14px}
+  .result .steps .s{padding:6px 0; color:var(--sub)}
+  .result .steps .s b{color:var(--ink)}
+  .result.wait{border-color:var(--hair)}
+  .result.wait .rh{color:var(--faint)}
+
+  .contact{margin-top:36px; border-top:1px solid var(--hair); padding-top:24px}
+  .contact .ch{font-size:15px; font-weight:800}
+  .contact .cd{font-size:14px; color:var(--sub); margin-top:6px}
+  .contact a.mail{display:inline-block; margin-top:14px; font-size:15px; font-weight:800; color:var(--ink);
+    border:1.5px solid var(--line); padding:12px 18px; text-decoration:none}
+  form.lead{margin-top:18px; display:flex; flex-direction:column; gap:10px}
+  form.lead input{border:1.5px solid var(--hair); padding:13px 14px; font-size:15px; font-family:inherit; color:var(--ink)}
+  form.lead input:focus{outline:none; border-color:var(--ink)}
+  form.lead button{padding:15px 0; font-size:15px; font-weight:800; color:#fff; background:var(--ink); border:none; cursor:pointer}
+  .staxx{font-size:13px; color:var(--sub); margin-top:14px}
+  .staxx a{color:var(--ink)}
+  .fine{font-size:12px; color:var(--faint); margin-top:26px; line-height:1.6}
+</style>
+
+<div class="wrap">
+  <div class="kick">임팩트스퀘어</div>
+  <h1>립스(LIPS) 자격 자가진단</h1>
+  <p class="lede">3분 내로 우리 회사가 립스 지원 대상인지 확인하세요.</p>
+  <div class="intro">립스는 <b>소상공인 투자연계 지원사업</b>으로, 민간 운영사가 먼저 투자한 소상공인에게 정부가 지원 자금을 매칭하는 사업입니다.</div>
+
+  <div class="quiz">
+    <div class="q" data-q="0">
+      <div class="qn">Q1</div><div class="qt">우리 회사는 법인인가요?</div>
+      <div class="qd">지분 투자는 법인만 받을 수 있습니다. 개인사업자라면 법인 전환이 첫 단계입니다.</div>
+      <div class="opts"><div class="opt" data-v="1">예</div><div class="opt" data-v="0">아니오</div></div>
+      <div class="verdict"></div>
+    </div>
+    <div class="q" data-q="1">
+      <div class="qn">Q2</div><div class="qt">운영사의 투자를 받았거나, 받을 계획이 있나요?</div>
+      <div class="qd">립스는 민간 선투자가 전제입니다. 공고일 기준 3년 이내 투자여야 합니다.</div>
+      <div class="opts"><div class="opt" data-v="1">예</div><div class="opt" data-v="0">아니오</div></div>
+      <div class="verdict"></div>
+    </div>
+    <div class="q" data-q="2">
+      <div class="qn">Q3</div><div class="qt">소상공인 규모인가요?</div>
+      <div class="qd">상시근로자(제조·건설·운수 10인 미만 / 그 밖 5인 미만)와 업종별 매출 상한을 함께 보며, 소상공인확인서 한 장으로 확정됩니다. <a href="https://sminfo.mss.go.kr" target="_blank" rel="noopener">확인서 발급 →</a></div>
+      <div class="opts"><div class="opt" data-v="1">예</div><div class="opt" data-v="0">아니오</div></div>
+      <div class="verdict"></div>
+    </div>
+    <div class="q" data-q="3">
+      <div class="qn">Q4</div><div class="qt">올해 중앙부처 창업지원사업을 수행하고 있지 않나요?</div>
+      <div class="qd">아래 43개 사업 중 하나라도 올해 수행 중이면 립스 신청이 불가합니다(신청 그해 기준). 수행 중인 게 없으면 '예'를 선택하세요.</div>
+      <table class="proglist">
+        <tr><td class="dept">중소벤처<br>기업부</td><td class="pgs"><span class="pg">신사업창업사관학교</span><span class="pg">로컬크리에이터 육성</span><span class="pg">강한소상공인 성장지원</span><span class="pg">글로벌 소상공인(K-소상공인)</span><span class="pg">예비·초기·도약 창업패키지</span><span class="pg">초격차 스타트업 DIPS·Global DIPS</span><span class="pg">TIPS(창업사업화·프리팁스·포스트팁스·R&D)</span><span class="pg">창업중심대학</span><span class="pg">재도전성공패키지</span><span class="pg">제품화 ALL-In-One</span><span class="pg">첨단제조 스케일업</span><span class="pg">청년창업사관학교</span> <b>(23개)</b></td></tr>
+        <tr><td class="dept">과기정통부</td><td class="pgs"><span class="pg">AI·디지털전환 혁신기업 해외실증</span></td></tr>
+        <tr><td class="dept">기후에너지<br>환경부</td><td class="pgs"><span class="pg">에코스타트업</span></td></tr>
+        <tr><td class="dept">농림축산<br>식품부</td><td class="pgs"><span class="pg">농식품 벤처육성</span><span class="pg">민간투자기반 스케일업</span><span class="pg">청년식품 창업성장</span></td></tr>
+        <tr><td class="dept">문화체육<br>관광부</td><td class="pgs"><span class="pg">관광 오픈이노베이션</span><span class="pg">관광벤처 공모전</span><span class="pg">선도기업 동반성장</span><span class="pg">스포츠산업 창업(예비·초기·중기)</span><span class="pg">예술분야 창업</span><span class="pg">전통문화 청년창업</span><span class="pg">콘텐츠 액셀러레이터·투자연계 창업도약</span></td></tr>
+        <tr><td class="dept">통일부</td><td class="pgs"><span class="pg">기창업자 경영개선자금</span><span class="pg">소규모 신규 창업자 지원</span></td></tr>
+        <tr><td class="dept">해양수산부</td><td class="pgs"><span class="pg">해양신산업 인큐베이팅</span></td></tr>
+        <tr><td class="dept">산림청</td><td class="pgs"><span class="pg">청년 산림창업 마중물</span></td></tr>
+        <tr><td class="dept">방위사업청</td><td class="pgs"><span class="pg">방산혁신클러스터(경북·구미 / 대전 드론특화)</span></td></tr>
+      </table>
+      <div class="opts"><div class="opt" data-v="1">예 (수행 중 없음)</div><div class="opt" data-v="0">아니오 (수행 중)</div></div>
+      <div class="verdict"></div>
+    </div>
+  </div>
+
+  <div class="result wait" id="result">
+    <div class="rlabel">진단 결과</div>
+    <div class="rh" id="rh">네 문항을 모두 선택하면 결과가 나옵니다.</div>
+    <div id="rbody"></div>
+  </div>
+
+  <div class="contact">
+    <div class="ch">투자팀 문의</div>
+    <div class="cd">임팩트스퀘어 투자팀 조용민</div>
+    <a class="mail" href="mailto:Gloooomy@impactsquare.com?subject=립스 자가진단 문의">Gloooomy@impactsquare.com</a>
+    <form class="lead" action="mailto:Gloooomy@impactsquare.com" method="POST" enctype="text/plain">
+      <input type="text" name="company" placeholder="회사명" required>
+      <input type="email" name="email" placeholder="연락받을 이메일" required>
+      <button type="submit">진단 결과 보내고 상담 신청</button>
+    </form>
+    <div class="staxx">영주 로컬 창업 거점 STAXX — <a href="https://staxx.co.kr" target="_blank" rel="noopener">staxx.co.kr</a></div>
+  </div>
+
+  <div class="fine">2026년 립스 공고 기준으로 만든 참고용 자가진단입니다. 최종 자격은 해당 연도 공고와 운영사 확인이 필요합니다.</div>
+</div>
+
+<script>
+// 각 문항 판정 문구 (선택한 값 기준)
+const V = {
+  0:{pass:"법인 — 통과", block:{h:"개인사업자 — 법인 전환이 먼저입니다.", d:"‘안 된다’가 아니라 ‘지금 시작하면 내년’입니다. 올해 법인 전환하고 투자 준비를 해두면 내년 립스가 가능합니다."}},
+  1:{pass:"선투자 있음 — 통과", block:{h:"선투자 필요 — 투자 검토부터입니다.", d:"신청서만으로는 안 됩니다. 서류가 준비된 회사 기준 투자 검토에 3~6개월이 걸립니다."}},
+  2:{pass:"소상공인 — 통과", block:{h:"규모 초과 — 립스 대상 밖일 수 있습니다.", d:"규모가 크다면 립스보다 다른 성장 자금(투자·정책자금)이 맞습니다."}},
+  3:{pass:"중복 없음 — 통과", block:{h:"중복 — 둘 중 하나를 선택해야 합니다.", d:"립스는 43개 중앙부처 사업과 같은 해에 동시 수행할 수 없습니다."}},
+};
+// 최종 결과(막힌 문항 우선순위 1→2→3→4)
+const FINAL = {
+  q0:{h:"먼저 법인 전환입니다.", steps:["법인 전환","민간 투자 유치","립스 신청"]},
+  q1:{h:"투자 검토부터입니다.", steps:["자료 준비(회사소개·3년 재무제표·주주명부·매출)","투자 검토·집행","운영사 추천 → 립스 신청"]},
+  q2:{h:"립스 대상 밖일 수 있습니다.", steps:[]},
+  q3:{h:"올해 수행 중인 사업과 하나를 선택해야 합니다.", steps:[]},
+  ok:{h:"립스 신청 자격에 가깝습니다.", steps:["민간 투자 검토","운영사 추천","립스 신청"]},
+};
+const ans = {};
+document.querySelectorAll('.q').forEach(q=>{
+  const qi = q.dataset.q;
+  q.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{
+    q.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+    o.classList.add('sel'); ans[qi]=o.dataset.v;
+    // 문항별 즉시 판정
+    const v = q.querySelector('.verdict');
+    const pass = o.dataset.v === '1';
+    v.className = 'verdict show ' + (pass ? 'pass' : 'block');
+    v.innerHTML = pass
+      ? '✓ ' + V[qi].pass
+      : '<span class="vh">! ' + V[qi].block.h + '</span><br>' + V[qi].block.d;
+    render();
+  }));
+});
+function render(){
+  const done = Object.keys(ans).length === 4;
+  const res = document.getElementById('result');
+  const rh = document.getElementById('rh');
+  const rb = document.getElementById('rbody');
+  if(!done){
+    res.className = 'result wait';
+    rh.textContent = `네 문항을 모두 선택하면 결과가 나옵니다. (${Object.keys(ans).length}/4)`;
+    rb.innerHTML = '';
+    return;
+  }
+  let key='ok';
+  if(ans['0']==='0') key='q0';
+  else if(ans['1']==='0') key='q1';
+  else if(ans['2']==='0') key='q2';
+  else if(ans['3']==='0') key='q3';
+  const f = FINAL[key];
+  res.className = 'result';
+  rh.textContent = f.h;
+  const steps = f.steps.length
+    ? `<div class="steps">${f.steps.map((s,i)=>`<div class="s"><b>${i+1}.</b> ${s}</div>`).join('')}</div>` : '';
+  rb.innerHTML = (key==='ok'
+    ? '<div class="rb">네 조건을 모두 충족하셨습니다. 투자팀과 상담해 다음 단계를 잡으세요.</div>'
+    : '<div class="rb">아래 순서로 준비하면 됩니다. 어느 단계든 투자팀이 함께 봐 드립니다.</div>') + steps;
+}
+</script>
+</html>
