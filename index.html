@@ -124,7 +124,10 @@
     <form class="lead" action="mailto:Gloooomy@impactsquare.com" method="POST" enctype="text/plain">
       <input type="text" name="company" placeholder="회사명" required>
       <input type="email" name="email" placeholder="연락받을 이메일" required>
+      <input type="hidden" name="diagnosis_answers">
+      <input type="hidden" name="diagnosis_result">
       <button type="submit">진단 결과 보내고 상담 신청</button>
+      <p id="lead-status" role="status" aria-live="polite"></p>
     </form>
     <div class="staxx">영주 로컬 창업 거점 STAXX — <a href="https://staxx.co.kr" target="_blank" rel="noopener">staxx.co.kr</a></div>
   </div>
@@ -164,6 +167,27 @@ document.querySelectorAll('.q').forEach(q=>{
     render();
   }));
 });
+function resultKey(){
+  if(!['0','1','2','3'].every(qi => ans[qi] === '0' || ans[qi] === '1')) return null;
+  return ['0','1','2','3'].map(qi => 'q' + qi).find(key => ans[key.slice(1)] === '0') || 'ok';
+}
+const leadForm = document.querySelector('form.lead');
+leadForm.addEventListener('submit', event => {
+  const key = resultKey();
+  const status = document.getElementById('lead-status');
+  if(key === null){
+    event.preventDefault();
+    leadForm.elements.namedItem('diagnosis_answers').value = '';
+    leadForm.elements.namedItem('diagnosis_result').value = '';
+    status.textContent = '네 문항에 모두 답한 뒤 상담을 신청해주세요.';
+    return;
+  }
+  leadForm.elements.namedItem('diagnosis_answers').value = ['0','1','2','3'].map(qi =>
+    `문항 ${Number(qi)+1}: ${ans[qi] === '1' ? V[qi].pass : V[qi].block.h}`
+  ).join(' / ');
+  leadForm.elements.namedItem('diagnosis_result').value = FINAL[key].h;
+  status.textContent = '메일 앱에서 진단 내용과 연락처를 확인한 뒤 직접 전송해주세요.';
+});
 function render(){
   const done = Object.keys(ans).length === 4;
   const res = document.getElementById('result');
@@ -175,11 +199,7 @@ function render(){
     rb.innerHTML = '';
     return;
   }
-  let key='ok';
-  if(ans['0']==='0') key='q0';
-  else if(ans['1']==='0') key='q1';
-  else if(ans['2']==='0') key='q2';
-  else if(ans['3']==='0') key='q3';
+  const key = resultKey();
   const f = FINAL[key];
   res.className = 'result';
   rh.textContent = f.h;
